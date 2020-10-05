@@ -10,7 +10,12 @@ package pr3metah;
  * @author Juanca
  */
 class FicheroNoEncontrado extends Exception {
-    FicheroNoEncontrado(String msg) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	FicheroNoEncontrado(String msg) {
         super(msg);
     }
 }

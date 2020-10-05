@@ -19,8 +19,10 @@ class Genetico {
 
     private int tamPoblacion = 50;
     private int tabu;
-    private ArrayList<int[]> poblacion, descendencia;
-    private int costes[], costesAux[];
+    private ArrayList<int[]> poblacion;
+    private ArrayList<int[]> descendencia;
+    private int[] costes;
+    private int[] costesAux;
     private double probGen;
     private int nGeneracion;
     private LocalSearch local;
@@ -36,16 +38,20 @@ class Genetico {
      * @param optimo coste optimo del fichero que se está evaluando
      * @param alg algoritmo que se esta evaluando
      */
-    void AGGHux(int x, int y, int matriz[][], Pair cubreOrdenado[], String optimo, String alg, String mejora, int modo) {
-        long time_start, time_end;
+    void AGGHux(int x, int y, int[][] matriz, Pair[] cubreOrdenado, String optimo, String alg, String mejora, int modo) {
+        long time_start;
+        long time_end;
         time_start = System.currentTimeMillis();
         poblacion = new ArrayList<>();
         costes = new int[tamPoblacion];
-        boolean modificado[] = new boolean[tamPoblacion];
+        boolean[] modificado = new boolean[tamPoblacion];
         Random rand = new Random();
         local = new LocalSearch();
-        int h1[], h2[];
-        int anteriorMejor = 9999999, generacion = 0, restantes;
+        int h1[];
+        int h2[];
+        int anteriorMejor = 9999999;
+        int generacion = 0; 
+        int restantes;
         generarPoblacion(x, y, tamPoblacion, cubreOrdenado, matriz);
         for (int i = 1; i < tamPoblacion; i++) {
             modificado[i] = false;
@@ -53,7 +59,8 @@ class Genetico {
 
         //Se generan los descendientes
         int z = tamPoblacion;
-        int esperanza = (int) Math.round(0.7 * (tamPoblacion / 2)), mejores = (int) Math.round(0.1 * tamPoblacion);
+        int esperanza = (int) Math.round(0.7 * (tamPoblacion / 2));
+        int mejores = (int) Math.round(0.1 * tamPoblacion);
         while (z < 20000) {
             descendencia = new ArrayList<>();
             costesAux = new int[tamPoblacion];
@@ -239,7 +246,8 @@ class Genetico {
      */
     private boolean reinicializarConv() {
         Pair reinicializacion[];
-        int tamReinicio = 0, donde = 0;
+        int tamReinicio = 0;
+        int donde = 0;
         reinicializacion = new Pair[tamPoblacion];
         boolean encontrado;
 
@@ -331,11 +339,12 @@ class Genetico {
      * @return      
      * 
      */
-    private int[] generarCromosoma(int x, int y, Pair cubreOrdenado[], int matriz[][], int num) {
-        int cromo[] = new int[y];
+    private int[] generarCromosoma(int x, int y, Pair[] cubreOrdenado, int[][] matriz, int num) {
+        int[] cromo = new int[y];
         int coste = 0;
         Random rnd = new Random();
-        int nR, n;
+        int nR;
+        int n;
         for (int i = 1; i < y; i++) {
             cromo[i] = 0;
         }
@@ -391,7 +400,7 @@ class Genetico {
      * @param y numero de columnas de la matriz (comisarias)
      * @return      
      */
-    private int calculaSolucion(int y, int solucion[], int mat[][]) {
+    private int calculaSolucion(int y, int[] solucion, int[][] mat) {
         int coste = 0;
         for (int i = 1; i < y; i++) {
             if (solucion[i] == 1) {
